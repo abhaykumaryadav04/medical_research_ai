@@ -1,15 +1,23 @@
 package com.a4b.medical_research.model;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.a4b.medical_research.enummeration.Role;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import lombok.Builder;
+import lombok.Data;
 
 @Entity
 @Data
@@ -18,11 +26,14 @@ public class User implements UserDetails {
 @GeneratedValue(strategy = GenerationType.IDENTITY)
 private Long id;
 private String name;
+@Column(nullable = false,unique = true)
 private String email;
 private String password;
+@Enumerated(EnumType.STRING)
+private Role role;
 @Override
-public private Collection<? extends GrantedAuthority> getAuthorities() {
-   
+public  Collection<? extends GrantedAuthority> getAuthorities() {
+    return List.of(new SimpleGrantedAuthority("ROLE_" + getRole()));
 }
 
 @Override

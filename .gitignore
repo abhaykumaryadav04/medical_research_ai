@@ -32,5 +32,7 @@ build/
 ### VS Code ###
 .vscode/
 \Graphics\medical_research\src\main\resources\application.properties
+
 medical_research\src\main\resources\application.properties
+
 src\main\resources\application.properties

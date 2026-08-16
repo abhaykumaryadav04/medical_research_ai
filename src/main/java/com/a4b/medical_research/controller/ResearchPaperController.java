@@ -27,4 +27,5 @@ public ResponseEntity<List<ResearchPaper>> getAll(){
     return ResponseEntity.ok((researchPaperService.getAllResearchPaper()));
 }
 
+
 }
