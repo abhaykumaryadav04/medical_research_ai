@@ -7,10 +7,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.a4b.medical_research.dto.AuthResponse;
 import com.a4b.medical_research.dto.LoginRequest;
 import com.a4b.medical_research.dto.RegisterRequest;
 import com.a4b.medical_research.model.User;
 import com.a4b.medical_research.repo.UserRepo;
+import com.a4b.medical_research.security.JwtService;
 
 @Service
 public class AuthService {
@@ -19,7 +21,10 @@ private PasswordEncoder passwordEncoder;
 @Autowired
 private UserRepo userRepo;
 @Autowired
+private JwtService jwtService;
+@Autowired
 private AuthenticationManager authenticationManager;
+
     public String  register(RegisterRequest request) {
       if(userRepo.existsByEmail(request.getEmail())){
         throw new RuntimeException("User alreasy register");
@@ -33,12 +38,15 @@ private AuthenticationManager authenticationManager;
         return"Successfully Register";
     }
 
-    public String login(LoginRequest request) {
+    public AuthResponse login(LoginRequest request) throws Exception {
        Authentication authentication=authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+       User user=userRepo.findByEmail(request.getEmail()).orElseThrow(()-> new Exception("User not found!"));
+        AuthResponse response=null;
        if(authentication.isAuthenticated()){
-        return "Success";
+         response=AuthResponse.builder().jwt(jwtService.generateToken(user)).build();
+        return response;
        }
-       return "Login failed";
+       return response;
     }
 
 }

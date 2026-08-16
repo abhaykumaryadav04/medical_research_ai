@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.a4b.medical_research.dto.AuthResponse;
 import com.a4b.medical_research.dto.LoginRequest;
 import com.a4b.medical_research.dto.RegisterRequest;
 import com.a4b.medical_research.service.AuthService;
@@ -23,7 +24,7 @@ public ResponseEntity<String> register(@RequestBody RegisterRequest request){
     return ResponseEntity.ok(authService.register(request));
 }
 @PostMapping("/login")
-ResponseEntity<String> login(@RequestBody LoginRequest request){
+ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) throws Exception{
     return ResponseEntity.ok(authService.login(request));
 
 }
