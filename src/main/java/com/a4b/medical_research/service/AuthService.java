@@ -39,13 +39,18 @@ private AuthenticationManager authenticationManager;
     }
 
     public AuthResponse login(LoginRequest request) throws Exception {
+       System.out.println("LOGIN START");
+    System.out.println("EMAIL: " + request.getEmail());
        Authentication authentication=authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
        User user=userRepo.findByEmail(request.getEmail()).orElseThrow(()-> new Exception("User not found!"));
         AuthResponse response=null;
+         System.out.println("AUTHENTICATION SUCCESS: "
+            + authentication.isAuthenticated());
        if(authentication.isAuthenticated()){
          response=AuthResponse.builder().jwt(jwtService.generateToken(user)).build();
         return response;
        }
+        System.out.println("TOKEN GENERATED");
        return response;
     }
 

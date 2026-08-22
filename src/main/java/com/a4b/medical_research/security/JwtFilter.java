@@ -17,6 +17,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class JwtFilter extends OncePerRequestFilter {
     @Autowired
     private JwtService jwtService;
+    @Autowired
     private CustumUserDetailsService custumUserDetailsService;
 
     @Override

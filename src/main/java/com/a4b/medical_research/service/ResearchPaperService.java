@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.a4b.medical_research.dto.QueryResponse;
+import com.a4b.medical_research.dto.ResearchPaperResponse;
 import com.a4b.medical_research.model.ResearchPaper;
 import com.a4b.medical_research.repo.ResearchPaperRepo;
 
@@ -38,5 +39,19 @@ public List<QueryResponse> getResponse(String keyword) {
     }
     return reposes;
 }
+  public ResearchPaper saveExternalPapers(ResearchPaperResponse response){
+      return  researchPaperrepo.findByPmid(response.getSourceId())
+                                .orElseGet(()-> {
+                                    ResearchPaper paper=new ResearchPaper();
+                                    paper=ResearchPaper.builder().abstractText(response.getAbstractText())
+                                                                  .authors(String.join(",",response.getAuthors()))
+                                                                  .pmid(response.getSourceId())
+                                                                  .sourceUrl(response.getSourceUrl())
+                                                                  .title(response.getTitle())
+                                                                  .publicationDate(response.getPublicationDate())
+                                                                   .build();
+                                                return researchPaperrepo.save(paper);
+                                });
+    }
 
 }

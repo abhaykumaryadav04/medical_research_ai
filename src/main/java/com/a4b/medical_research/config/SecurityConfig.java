@@ -29,13 +29,29 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http){
-        http.csrf(csrf-> csrf.disable())
-            .authorizeHttpRequests(request-> request.requestMatchers("/api/auth/login","/api/auth/register")
-             .permitAll().anyRequest().authenticated())
-             .sessionManagement(sesson->sesson.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-             .authenticationProvider(getAuthenticationProvider())
-             .addFilterBefore(jwtFilter,UsernamePasswordAuthenticationFilter.class);
-             return http.build();
+          http
+        .csrf(csrf -> csrf.disable())
+        .authorizeHttpRequests(request -> request .requestMatchers(
+                "/api/auth/register",
+                "/api/auth/login"
+            ).permitAll()
+            .anyRequest().authenticated()
+        )
+
+        .sessionManagement(session ->
+            session.sessionCreationPolicy(
+                SessionCreationPolicy.STATELESS
+            )
+        )
+
+        .authenticationProvider(getAuthenticationProvider())
+
+        .addFilterBefore(
+            jwtFilter,
+            UsernamePasswordAuthenticationFilter.class
+        );
+
+    return http.build();
     }
     @Bean
     public  AuthenticationProvider getAuthenticationProvider() {

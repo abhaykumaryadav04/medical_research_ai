@@ -24,7 +24,7 @@ public ResponseEntity<String> register(@RequestBody RegisterRequest request){
     return ResponseEntity.ok(authService.register(request));
 }
 @PostMapping("/login")
-ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) throws Exception{
+public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) throws Exception{
     return ResponseEntity.ok(authService.login(request));
 
 }
